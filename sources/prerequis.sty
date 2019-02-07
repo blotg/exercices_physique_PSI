@@ -1,0 +1,36 @@
+% Les indispensables
+\RequirePackage[T1]{fontenc}% encodage
+\RequirePackage{lmodern}% police latines
+\RequirePackage[francais]{babel}% écrire en français
+\RequirePackage{geometry}% contrôle de la mise en page
+\RequirePackage{titlesec}% mise en forme des titres
+\RequirePackage{fancyhdr}% mise en formes de l'entête et du pied de page
+\RequirePackage{enumitem}% pour mettre en forme enumerate
+\RequirePackage{amsmath}% commandes de maths
+\RequirePackage{graphicx}% commandes graphiques comme includegraphics
+
+% Les utiles pour les SPC
+\RequirePackage{esvect}% pour \vv pour les vecteurs
+\RequirePackage{siunitx}% pour la commande SI
+	\sisetup{locale = FR}
+\RequirePackage[version=4]{mhchem}% pour les formules chimiques avec \ce{}
+\DeclareMathOperator{\gradT}{grad}% opérateurs vectoriels
+\newcommand{\grad}{\vv{\gradT}}
+\DeclareMathOperator{\rotT}{rot}
+\newcommand{\rot}{\vv{\rotT}}
+
+% Mise en forme spécifique
+\RequirePackage{tasks}% pour des listes sur plusieurs colonnes
+\RequirePackage{pifont}% pour des caractères spéciaux avec \ding{}
+\RequirePackage{wrapfig}% pour les figures flotante dans le texte
+
+\newcounter{question}% Définition de la commande \question
+\newcommand{\question}{\par\stepcounter{question}\thequestion. }
+\newcounter{exercice}
+\newcommand{\exercice}[1]{%
+  \stepcounter{exercice}
+  \setcounter{question}{0}
+  \subsection*{Exercice \theexercice{} - #1}
+}
+
+\endinput
