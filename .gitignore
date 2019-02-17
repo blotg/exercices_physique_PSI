@@ -4,6 +4,9 @@ build/*
 resultat
 resultat/*
 
+## Fichiers auxiliaires python
+*.pyc
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
