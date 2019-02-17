@@ -1,3 +1,9 @@
+## Build and resultat directories
+build
+build/*
+resultat
+resultat/*
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
