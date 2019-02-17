@@ -28,6 +28,22 @@ def parcours_dossiers():
                 exercices[e.theme][e.soustheme].append(e)
     return exercices
 
+def affiche_exercices(exercices):
+    for theme in exercices:
+        print("|" + theme)
+        for soustheme in exercices[theme]:
+            print("|--|" + soustheme)
+            for e in exercices[theme][soustheme]:
+                print("|  |-- ", end="")
+                if e.omis:
+                    print("(", end="")
+                print(e.titre, end="")
+                for i in range(e.difficulte):
+                    print("*", end="")
+                if e.omis:
+                    print(")", end="")
+                print()
+
 def genere_latex(exercices):
     source_latex = """\\documentclass{recueil}
     \\begin{document}
@@ -50,7 +66,9 @@ def compilation():
     print("Initialisation des dossiers ...")
     init_dossiers()
     print("Génération de la liste des exercices ...")
-    genere_latex(parcours_dossiers())
+    exercices = parcours_dossiers()
+    affiche_exercices(exercices)
+    genere_latex(exercices)
     print("Compilation par latex ...")
     compilation_latex()
 

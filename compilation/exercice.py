@@ -3,6 +3,7 @@
 import yaml
 
 class Exercice:
+    titre = ""
     theme = ""
     soustheme = ""
     difficulte = 0
@@ -18,6 +19,8 @@ class Exercice:
                 if ligne.startswith("%%"):
                     entete += ligne[2:]
         valeurs = yaml.load(entete)
+        if "titre" in valeurs:
+            self.titre = valeurs["titre"]
         if "theme" in valeurs:
             self.theme = valeurs["theme"]
         if "soustheme" in valeurs:
