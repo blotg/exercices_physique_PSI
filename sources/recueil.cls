@@ -32,4 +32,13 @@
 \pagestyle{suivantes}% Application de ces styles
 \AtBeginDocument{\thispagestyle{premiere}}
 
+\newcounter{question}% Définition de la commande \question
+\newcommand{\question}{\par\stepcounter{question}\thequestion. }
+\newcounter{exercice}
+\newcommand{\exercice}[1]{%
+  \stepcounter{exercice}
+  \setcounter{question}{0}
+  \subsection*{Exercice \theexercice{} - #1}
+}
+
 \endinput
