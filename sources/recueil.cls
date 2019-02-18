@@ -32,13 +32,17 @@
 \pagestyle{suivantes}% Application de ces styles
 \AtBeginDocument{\thispagestyle{premiere}}
 
+\newcounter{subquestion}
+\newcommand{\subquestion}{\stepcounter{subquestion}\tabto{1.4em}\alph{subquestion})\tabto{2.7em}}
 \newcounter{question}% Définition de la commande \question
-\newcommand{\question}{\par\stepcounter{question}\thequestion. }
+\newcommand{\question}{\par\stepcounter{question}\noindent\rlap{\thequestion.}\tabto{1.4em}}
 \newcounter{exercice}
 \newcommand{\exercice}[1]{%
   \stepcounter{exercice}
   \setcounter{question}{0}
-  \subsection*{Exercice \theexercice{} - #1}
+  \subsubsection*{Exercice \theexercice{} - #1}
 }
+\newcommand{\solution}{}
+%  \g@addto@macro\solution{\}
 
 \endinput
