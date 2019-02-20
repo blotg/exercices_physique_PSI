@@ -11,6 +11,22 @@ def traduirArgparseMessages(s):
 gettext.gettext = traduirArgparseMessages
 import argparse
 
+import re
+
+class TraiteIntervalle(argparse.Action):
+    def __call__(self, parseur, namespace, valeurs, option_string=None):
+        l = []
+        for valeur in valeurs:
+            if re.fullmatch("([0-9]+)-([0-9]+)", valeur):
+                [debut,fin] = valeur.split("-")
+                l.extend(list(range(int(debut), int(fin)+1)))
+            elif re.fullmatch("[0-9]+", valeur):
+                l.append(int(valeur))
+            else:
+                parseur.error("'" + valeur + "' n'est pas un intervalle. Formes attendues : '0-3' ou '2'.")
+                l.append(int(valeur))
+            setattr(namespace, self.dest, l)
+
 class Parseur:
     def __init__(self):
         self.parseur = argparse.ArgumentParser(
@@ -37,8 +53,9 @@ Chaque exercice doit être dans un fichier tex comportant un entête suivi de la
             "-l", "--classes",
             nargs='+',
             help = "Précises les classes pour lesquelles compiler le recueil.")
-#        self.parseur.add_argument(
-#            "-d", "--difficulte",
-#            nargs='+',
-#            help = "Précises les difficultés des exercices du recueil.")
+        self.parseur.add_argument(
+            "-d", "--difficulte",
+            nargs='+',
+            action=TraiteIntervalle,
+            help = "Précises les difficultés des exercices du recueil.")
         self.args = self.parseur.parse_args()

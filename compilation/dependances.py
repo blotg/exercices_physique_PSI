@@ -32,6 +32,11 @@ def verifier_dependances():
     except ImportError:
         print("La bibliothèque python \"argparse\" n'est pas installée et est nécessaire pour continuer.")
         satisfaites = False
+    try:
+        import re
+    except ImportError:
+        print("La bibliothèque python \"re\" n'est pas installée et est nécessaire pour continuer.")
+        satisfaites = False
     
     programmes_systeme = ["latexmk", "lualatex"]
     for prog in programmes_systeme:

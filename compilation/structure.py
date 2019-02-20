@@ -33,7 +33,7 @@ class Structure:
                     chaine += "\n"
         chaine = chaine[:-1]
         return chaine
-    def genere_latex(self, classes):
+    def genere_latex(self, classes, difficultes):
         if classes == None:
             classes = ["PC", "MP", "PSI"]
         source_latex = "\\documentclass{recueil}\n\\begin{document}"
@@ -42,7 +42,7 @@ class Structure:
             for soustheme in self.s[theme]:
                 source_latex += "\\subsection{" + soustheme + "}\n"
                 for e in self.s[theme][soustheme]:
-                    if any(x in e.classes for x in classes):
+                    if any(x in e.classes for x in classes) and e.difficulte in difficultes:
                         source_latex += e.inclusion()
         source_latex += """\\end{document}"""
         return source_latex
