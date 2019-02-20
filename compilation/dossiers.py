@@ -19,14 +19,14 @@ def compilation_latex():
     processus = subprocess.Popen(["latexmk", "-pdf", "-output-directory=../resultat", "recueil.tex"], cwd="build", stdout=subprocess.PIPE)
     print(processus.communicate()[0].decode())
 
-def compilation():
+def compilation(classes):
     print("Initialisation des dossiers ...")
     init_dossiers()
     print("Génération de la liste des exercices ...")
     exercices = Structure("sources/exercices")
     print(exercices)
     with open("build/recueil.tex", "w") as fichier_latex:
-        fichier_latex.write(exercices.genere_latex())
+        fichier_latex.write(exercices.genere_latex(classes))
     print("Compilation par latex ...")
     compilation_latex()
 

@@ -21,7 +21,7 @@ Chaque exercice doit être dans un fichier tex comportant un entête suivi de la
             help = "Compile le recueil d'exercices.",
             action = "store_true")
         self.parseur.add_argument(
-            "-l", "--pdflatex",
+            "-p", "--pdflatex",
             help = "Compilateur pdflatex à utiliser (lualatex par défaut) (non pris en compte à ce jour)",
             type=str,
             default="lualatex")
@@ -33,4 +33,12 @@ Chaque exercice doit être dans un fichier tex comportant un entête suivi de la
             "-N", "--nettoyer_tout",
             help = "Supprime tous les fichiers créés.",
             action = "store_true")
+        self.parseur.add_argument(
+            "-l", "--classes",
+            nargs='+',
+            help = "Précises les classes pour lesquelles compiler le recueil.")
+#        self.parseur.add_argument(
+#            "-d", "--difficulte",
+#            nargs='+',
+#            help = "Précises les difficultés des exercices du recueil.")
         self.args = self.parseur.parse_args()

@@ -33,13 +33,16 @@ class Structure:
                     chaine += "\n"
         chaine = chaine[:-1]
         return chaine
-    def genere_latex(self):
+    def genere_latex(self, classes):
+        if classes == None:
+            classes = ["PC", "MP", "PSI"]
         source_latex = "\\documentclass{recueil}\n\\begin{document}"
         for theme in self.s:
             source_latex += "\\section{" + theme + "}\n"
             for soustheme in self.s[theme]:
                 source_latex += "\\subsection{" + soustheme + "}\n"
                 for e in self.s[theme][soustheme]:
-                    source_latex += e.inclusion()
+                    if any(x in e.classes for x in classes):
+                        source_latex += e.inclusion()
         source_latex += """\\end{document}"""
         return source_latex

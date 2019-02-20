@@ -12,7 +12,7 @@ from compilation import parseur
 if dependances.verifier_dependances():
     pars = parseur.Parseur()
     if pars.args.compiler:
-        dossiers.compilation()
+        dossiers.compilation(pars.args.classes)
     if pars.args.nettoyer_tout:
         dossiers.nettoyage()
     if pars.args.nettoyer:
