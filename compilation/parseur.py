@@ -23,7 +23,7 @@ class TraiteIntervalle(argparse.Action):
             elif re.fullmatch("[0-9]+", valeur):
                 l.append(int(valeur))
             else:
-                parseur.error("'" + valeur + "' n'est pas un intervalle. Formes attendues : '0-3' ou '2'.")
+                parseur.error("'" + valeur + "' n'est pas un nombre ni un intervalle. Formes attendues : '0-3' ou '2'.")
                 l.append(int(valeur))
             setattr(namespace, self.dest, l)
 
