@@ -10,6 +10,7 @@ class Exercice:
     omis = True
     dossier = ""
     fichier = ""
+    classes = []
     def __init__(self, dossier, fichier):
         self.dossier = dossier + "/"
         self.fichier = fichier
@@ -29,3 +30,10 @@ class Exercice:
             self.difficulte = valeurs["difficulte"]
         if "omis" in valeurs:
             self.omis = valeurs["omis"]
+        if "classes" in valeurs:
+            self.classes = valeurs["classes"]
+    def inclusion(self):
+        if not self.omis:
+            return("\\inclure{../" + self.dossier + "}{" + self.fichier + "}\n")
+        else:
+            return("")
