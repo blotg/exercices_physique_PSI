@@ -36,6 +36,8 @@ class Structure:
     def genere_latex(self, classes, difficultes):
         if classes == None:
             classes = ["PC", "MP", "PSI"]
+        if difficultes == None:
+            difficultes = list(range(0,100))
         source_latex = "\\documentclass{recueil}\n\\begin{document}"
         for theme in self.s:
             source_latex += "\\section{" + theme + "}\n"
