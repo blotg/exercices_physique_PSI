@@ -24,9 +24,10 @@ def compilation(classes, difficultes):
     init_dossiers()
     print("Génération de la liste des exercices ...")
     exercices = Structure("sources/exercices")
+    exercices.selectionne(classes, difficultes)
     print(exercices)
     with open("build/recueil.tex", "w") as fichier_latex:
-        fichier_latex.write(exercices.genere_latex(classes, difficultes))
+        fichier_latex.write(exercices.genere_latex())
     print("Compilation par latex ...")
     compilation_latex()
 
