@@ -12,13 +12,15 @@ def init_dossiers():
         os.makedirs("resultat")
     shutil.copy("sources/recueil.cls", "build/")
     shutil.copy("sources/prerequis.sty", "build/")
+    if not os.path.exists("build/lua"):
+        os.makedirs("build/lua")
     for source_racine, dossiers, fichiers in os.walk("sources/lua/"):
         dest_racine = source_racine.replace("sources","build",1)
         for dossier in dossiers:
-            if not os.path.exists(dest_racine + "/" + dossier):
-                os.makedirs(dest_racine + "/" + dossier)
+            if not os.path.exists(dest_racine + dossier):
+                os.makedirs(dest_racine + dossier)
         for fichier in fichiers:
-            shutil.copy(source_racine + "/" + fichier, dest_racine + "/" + fichier)
+            shutil.copy(source_racine + fichier, dest_racine + fichier)
     with open("build/latexmkrc", "w") as fichier_latexmk:
         fichier_latexmk.write("""$pdflatex = 'lualatex --interaction=nonstopmode %O %S';""") 
 

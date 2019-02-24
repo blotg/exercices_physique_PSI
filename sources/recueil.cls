@@ -32,13 +32,20 @@
 \pagestyle{suivantes}% Application de ces styles
 \AtBeginDocument{\thispagestyle{premiere}}
 
+\LuaCodeDebugOn
 
-\begin{luacode*}
-  reponses = "";
-  function ajouteReponse(nQuestion, reponse)
-    reponses = reponses .. "\\par\\noindent\\rlap{" .. nQuestion .. ".}\\tabto{1.4em}" .. reponse;
-  end
-\end{luacode*}
+\luadirect{Reponses = require("lua/reponses")}
+
+\LetLtxMacro{\oldSection}{\section}
+\renewcommand{\section}[1]{%
+  \oldSection{#1}%
+  \luadirect{Reponses.section( \luastring{\thesection}, \luastringN{#1} )}%
+}
+\LetLtxMacro{\oldSubsection}{\subsection}
+\renewcommand{\subsection}[1]{%
+  \oldSubsection{#1}%
+  \luadirect{Reponses.subsection( \luastring{\arabic{subsection}}, \luastringN{#1} )}%
+}
 
 \newcounter{subquestion}
 \newcommand{\subquestion}{%
@@ -49,22 +56,23 @@
 \newcommand{\question}{%
   \par\stepcounter{question}%
   \setcounter{subquestion}{0}%
-  \noindent\rlap{\thequestion.}\tabto{1.4em}
+  \noindent\thequestion.\tabto{1.4em}
 }
 \newcounter{exercice}
 \newcommand{\exercice}[1]{%
   \stepcounter{exercice}%
   \setcounter{question}{0}%
-  \subsubsection*{Exercice \theexercice{} - #1}
+  \subsubsection*{Exercice \theexercice{} - #1}%
+  \luadirect{Reponses.exercice( \luastring{\theexercice}, \luastringN{#1} )}
 }
 
 \newcommand{\reponse}[1]{
   \luadirect{
-    ajouteReponse( \luastring{\thequestion}, \luastringN{#1} );
+    Reponses.reponse( \luastring{\thequestion}, \luastring{\alph{subquestion}}, \luastringN{#1} );
   }
 }
 \newcommand{\afficheReponse}{
-  \luadirect{tex.print(reponses)}
+  \luadirect{tex.print(Reponses.chaine)}
 }
 
 \endinput
