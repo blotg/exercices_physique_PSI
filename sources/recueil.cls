@@ -32,17 +32,39 @@
 \pagestyle{suivantes}% Application de ces styles
 \AtBeginDocument{\thispagestyle{premiere}}
 
+
+\begin{luacode*}
+  reponses = "";
+  function ajouteReponse(nQuestion, reponse)
+    reponses = reponses .. "\\par\\noindent\\rlap{" .. nQuestion .. ".}\\tabto{1.4em}" .. reponse;
+  end
+\end{luacode*}
+
 \newcounter{subquestion}
-\newcommand{\subquestion}{\stepcounter{subquestion}\tabto{1.4em}\alph{subquestion})\tabto{2.7em}}
+\newcommand{\subquestion}{%
+  \stepcounter{subquestion}%
+  \tabto{1.4em}\alph{subquestion})\tabto{2.7em}
+}
 \newcounter{question}% Définition de la commande \question
-\newcommand{\question}{\par\stepcounter{question}\noindent\rlap{\thequestion.}\tabto{1.4em}}
+\newcommand{\question}{%
+  \par\stepcounter{question}%
+  \setcounter{subquestion}{0}%
+  \noindent\rlap{\thequestion.}\tabto{1.4em}
+}
 \newcounter{exercice}
 \newcommand{\exercice}[1]{%
-  \stepcounter{exercice}
-  \setcounter{question}{0}
+  \stepcounter{exercice}%
+  \setcounter{question}{0}%
   \subsubsection*{Exercice \theexercice{} - #1}
 }
-\newcommand{\solution}{}
-%  \g@addto@macro\solution{\}
+
+\newcommand{\reponse}[1]{
+  \luadirect{
+    ajouteReponse( \luastring{\thequestion}, \luastringN{#1} );
+  }
+}
+\newcommand{\afficheReponse}{
+  \luadirect{tex.print(reponses)}
+}
 
 \endinput

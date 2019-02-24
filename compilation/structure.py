@@ -62,5 +62,6 @@ class Structure:
                 source_latex += "\\subsection{" + soustheme + "}\n"
                 for e in self.s[theme][soustheme]:
                     source_latex += e.inclusion()
-        source_latex += """\\end{document}"""
+        source_latex += "\\afficheReponse\n"
+        source_latex += "\\end{document}"
         return source_latex
