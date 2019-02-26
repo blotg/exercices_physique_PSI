@@ -1,6 +1,6 @@
 Reponses = {chaine = "", tempExercice = "", tempSubsection = "", tempSection = ""}
 
-function Reponses.reponse(nQuestion, nSubQuestion, reponse)
+function Reponses:reponse(nQuestion, nSubQuestion, reponse)
     Reponses.chaine = Reponses.chaine .. Reponses.tempSection
     Reponses.tempSection = ""
     Reponses.chaine = Reponses.chaine .. Reponses.tempSubsection
@@ -14,15 +14,15 @@ function Reponses.reponse(nQuestion, nSubQuestion, reponse)
     Reponses.chaine = Reponses.chaine .. reponse;
 end
 
-function Reponses.exercice(nExercice, titre)
+function Reponses:exercice(nExercice, titre)
     Reponses.tempExercice = "\\subsubsection*{Exercice " .. nExercice .. " - " .. titre .. "}"
 end
 
-function Reponses.subsection(nSubsection, titre)
+function Reponses:subsection(nSubsection, titre)
     Reponses.tempSubsection = "\\setcounter{subsection}{" .. nSubsection .. "}\\addtocounter{subsection}{-1}\\subsection{" .. titre .. "}"
 end
 
-function Reponses.section(nSection, titre)
+function Reponses:section(nSection, titre)
     Reponses.tempSection = "\\setcounter{section}{" .. nSection .. "}\\addtocounter{section}{-1}\\section{" .. titre .. "}"
 end
 

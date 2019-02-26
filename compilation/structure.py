@@ -55,13 +55,14 @@ class Structure:
         self.s = temp_s
         
     def genere_latex(self):
-        source_latex = "\\documentclass{recueil}\n\\begin{document}"
+        source_latex = "\\documentclass{recueil}\n\\begin{document}\n\\tableofcontents\n\\part{Énoncés}\n"
         for theme in self.s:
             source_latex += "\\section{" + theme + "}\n"
             for soustheme in self.s[theme]:
                 source_latex += "\\subsection{" + soustheme + "}\n"
                 for e in self.s[theme][soustheme]:
                     source_latex += e.inclusion()
-        source_latex += "\\afficheReponse\n"
+        source_latex += "\\begin{multicols}{2}[\\part{Réponses}]\n\\afficheReponses{}\n\\end{multicols}\n"
+#        source_latex += "\\part{Réponses}\n\\afficheReponses\n"
         source_latex += "\\end{document}"
         return source_latex

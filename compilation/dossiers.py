@@ -12,6 +12,7 @@ def init_dossiers():
         os.makedirs("resultat")
     shutil.copy("sources/recueil.cls", "build/")
     shutil.copy("sources/prerequis.sty", "build/")
+    shutil.copy("sources/exercice.sty", "build/")
     if not os.path.exists("build/lua"):
         os.makedirs("build/lua")
     for source_racine, dossiers, fichiers in os.walk("sources/lua/"):
