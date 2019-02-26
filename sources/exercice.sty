@@ -1,0 +1,51 @@
+\luadirect{Reponses = require("lua/reponses")}
+
+\def\WFfill{\par%
+  \ifx\parshape\WF@fudgeparshape%
+  \nobreak%
+  \ifnum\c@WF@wrappedlines>\@ne%
+  \advance\c@WF@wrappedlines\m@ne%
+  \vskip\c@WF@wrappedlines\baselineskip%
+  \global\c@WF@wrappedlines\z@%
+  \fi%
+  \allowbreak%
+  \WF@finale%
+  \fi%
+}
+
+\titleformat{\section}{\Large\bfseries}{\WFfill\WFclear\FloatBarrier\thesection.}{1em}{%
+ #1%
+ \luadirect{Reponses:section( \luastring{\thesection}, \luastringN{#1} )}%
+}
+
+\titleformat{\subsection}{\large\bfseries}{\WFfill\WFclear\FloatBarrier\thesubsection.}{1em}{%
+  #1%
+  \luadirect{Reponses:subsection( \luastring{\arabic{subsection}}, \luastringN{#1} )}%
+}
+
+\newcounter{subquestion}
+\newcommand{\subquestion}{%
+  \stepcounter{subquestion}%
+  \tabto{1.4em}\alph{subquestion})\tabto{2.7em}%
+}
+\newcounter{question}% Définition de la commande \question
+\newcommand{\question}{%
+  \par\stepcounter{question}%
+  \setcounter{subquestion}{0}%
+  \noindent\thequestion.\tabto{1.4em}%
+}
+\newcounter{exercice}
+\newcommand{\exercice}[1]{%
+  \WFfill\WFclear\FloatBarrier%
+  \stepcounter{exercice}%
+  \setcounter{question}{0}%
+  \subsubsection*{Exercice \theexercice{} - #1}%
+  \luadirect{Reponses:exercice( \luastring{\theexercice}, \luastringN{#1} )}%
+}
+
+\newcommand{\reponse}[1]{%
+  \luadirect{Reponses:reponse( \luastring{\thequestion}, \luastring{\alph{subquestion}}, \luastringN{#1} );}%
+}
+\newcommand{\afficheReponses}{%
+  \luadirect{tex.print(Reponses.chaine)}%
+}
