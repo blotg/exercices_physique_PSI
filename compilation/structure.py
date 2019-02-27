@@ -2,6 +2,7 @@
 
 import os
 from compilation import exercice
+import re
 
 class Structure:
     s = {}
@@ -53,16 +54,24 @@ class Structure:
                             temp_s[theme][soustheme] = []
                         temp_s[theme][soustheme].append(e)
         self.s = temp_s
-        
-    def genere_latex(self):
-        source_latex = "\\documentclass{recueil}\n\\begin{document}\n\\tableofcontents\n\\part{Énoncés}\n"
-        for theme in self.s:
-            source_latex += "\\section{" + theme + "}\n"
-            for soustheme in self.s[theme]:
-                source_latex += "\\subsection{" + soustheme + "}\n"
-                for e in self.s[theme][soustheme]:
-                    source_latex += e.inclusion()
-        source_latex += "\\begin{multicols}{2}[\\part{Réponses}]\n\\afficheReponses{}\n\\end{multicols}\n"
-#        source_latex += "\\part{Réponses}\n\\afficheReponses\n"
-        source_latex += "\\end{document}"
+    
+    def genere_latex(self, contenu):
+        if not contenu:
+            contenu = []
+        source_latex = ""
+        with open("sources/template.tex", "r") as fichier:
+            for ligne in fichier:
+                source_latex += ligne
+        if True:
+            enonces = ""
+            for theme in self.s:
+                enonces += "\\section{" + theme + "}\n"
+                for soustheme in self.s[theme]:
+                    enonces += "\\subsection{" + soustheme + "}\n"
+                    for e in self.s[theme][soustheme]:
+                        enonces += e.inclusion()
+            source_latex = re.sub("\\\\afficheEnonces", enonces, source_latex)
+        if not "R" in contenu:
+            motif = "(\\\\begin\{reponses\}).*?(\\\\end\{reponses\})"
+            source_latex = re.sub(motif, "", source_latex, flags=re.DOTALL)
         return source_latex
