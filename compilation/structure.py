@@ -6,6 +6,8 @@ import re
 
 class Structure:
     s = {}
+    classes = ["MPSI", "PCSI", "PTSI", "MP", "PC", "PSI"]
+    difficultes = [0,1,2,3,4]
     def __init__(self,dossier):
         for racine, dossiers, fichiers in os.walk(dossier):
             for fichier in fichiers:
@@ -37,17 +39,17 @@ class Structure:
         return chaine
     
     def selectionne(self, classes, difficultes):
-        if classes == None:
-            classes = ["PC", "MP", "PSI"]
-        if difficultes == None:
-            difficultes = list(range(0,100))
+        if classes:
+            self.classes = classes
+        if difficultes:
+            self.difficultes = difficultes
         temp_s = {}
         for theme in self.s:
             theme_vide = True
             for soustheme in self.s[theme]:
                 soustheme_vide = True
                 for e in self.s[theme][soustheme]:
-                    if any(x in e.classes for x in classes) and e.difficulte in difficultes:
+                    if any(x in e.classes for x in self.classes) and e.difficulte in self.difficultes:
                         if soustheme_vide:
                             if theme_vide:
                                 temp_s[theme] = {}
@@ -62,6 +64,9 @@ class Structure:
         with open("sources/template.tex", "r") as fichier:
             for ligne in fichier:
                 source_latex += ligne
+        motif = "\\\\newcommand\{\\\\classes\}\{\}"
+        remplacement = "\\\\newcommand{\\classes}{" + str(self.classes).replace("'","")[1:-1] + "}"
+        source_latex = re.sub(motif, remplacement, source_latex)
         if True:
             enonces = ""
             for theme in self.s:
