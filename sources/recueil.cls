@@ -1,34 +1,29 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{recueil}[2019/02/07 recueil]
+\ProvidesClass{recueil}[2019/03/01 recueil]% Nom et version de la classe
 
-% Aucune option n'est reconnue
-\DeclareOption*{%
-  \ClassWarning{recueil}{Unknown option '\CurrentOption'}%
+\DeclareOption*{% Déclare les options qui sont reconnues
+  \ClassWarning{recueil}{Unknown option '\CurrentOption'}% Aucune option n'est reconnue
 }
-
-\PassOptionsToClass{12pt}{article}% On utilise la classe article avec 12pt
 
 \ProcessOptions\relax% Traite les options
 
-\LoadClass[a4paper]{article}
+\LoadClass[a4paper, 12pt]{article}% On utilise la classe article
 
 \RequirePackage{prerequis}% Charge les prérequis du fichier "prerequis.sty"
-\RequirePackage{exercice}
+\RequirePackage{exercice}% Charge les commandes exercice, question et subquestion
 
-\geometry{left=1.5cm,right=1.5cm,top=2.5cm,bottom=2.5cm}% Défint la mise en page.
+\geometry{left=1.5cm,right=1.5cm,top=2.5cm,bottom=2.5cm}% Défint la mise en page
 
 \newcommand{\parttitle}{}
 \titleformat{\part}
   {\Huge\scshape}
   {}
   {0pt}
-  {\WFfill\WFclear\FloatBarrier\newpage #1\renewcommand{\parttitle}{#1}}
-
-%\renewcommand{\subsectionmark}[1]{\markright{\thesubsection\ #1}}
+  {\bariereFloat\newpage #1\renewcommand{\parttitle}{#1}}
 
 \fancypagestyle{premiere}{% Mise en page de la page de garde
   \fancyhf{}%
-  \fancyfoot[R]{\includegraphics[height=12px]{../sources/images/by-nc-sa.pdf}}%
+  \fancyfoot[C]{\includegraphics[height=12px]{../sources/images/by-nc-sa.pdf}}%
   \renewcommand{\headrulewidth}{0pt}%
   \renewcommand{\footrulewidth}{0pt}%
 }
@@ -43,6 +38,5 @@
 }
 
 \pagestyle{suivantes}% Application de ces styles
-\AtBeginDocument{\thispagestyle{premiere}}
 
 \endinput

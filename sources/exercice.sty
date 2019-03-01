@@ -1,6 +1,7 @@
-\luadirect{Reponses = require("lua/reponses")}
+\luadirect{local Reponses = require("lua/reponses")}% Objet Lua comportant les réponses
 
-\def\WFfill{\par%
+\newcommand{\bariereFloat}{% FloatBarrier qui fonctionne pour les wrapfig (source : stackoverflow)
+  \par%
   \ifx\parshape\WF@fudgeparshape%
   \nobreak%
   \ifnum\c@WF@wrappedlines>\@ne%
@@ -11,44 +12,62 @@
   \allowbreak%
   \WF@finale%
   \fi%
+%  \WFClear%
+  \FloatBarrier%
 }
 
-\titleformat{\section}{\Large\bfseries}{\WFfill\WFclear\FloatBarrier\thesection.}{1em}{%
- #1%
- \luadirect{Reponses:section( \luastring{\thesection}, \luastringN{#1} )}%
-}
+\titleformat{\section}% Redéfinition de la section
+  {\Large\bfseries}% Format
+  {\bariereFloat\thesection.}% Numéro de la section
+  {1em}% Espace entre numéro et titre
+  {%
+    #1% Titre
+    \luadirect{Reponses:section( \luastring{\thesection}, \luastringN{#1} )}% Ajout de la section à la partie réponses
+  }
 
-\titleformat{\subsection}{\large\bfseries}{\WFfill\WFclear\FloatBarrier\thesubsection.}{1em}{%
-  #1%
-  \luadirect{Reponses:subsection( \luastring{\arabic{subsection}}, \luastringN{#1} )}%
-}
+\titleformat{\subsection}% Redéfinition de la subsection
+  {\large\bfseries}% Format
+  {\bariereFloat\thesubsection.}% Numéro
+  {1em}% Espace entre numéro et titre
+  {%
+    #1% Titre
+    \luadirect{Reponses:subsection( \luastring{\arabic{subsection}}, \luastringN{#1} )}% Ajout de la subsection à la partie réponses
+  }
 
-\newcounter{subquestion}
+\titleformat{\subsubsection}% Redéfinition de la subsection
+  {\bfseries}% Format
+  {\bariereFloat Exercice \arabic{subsubsection} - }% Numéro
+  {0pt}% Espace entre numéro et titre
+  {%
+    #1% Titre
+  }
+
+\newcounter{subquestion}% Compteur des subquestions
 \newcommand{\subquestion}{%
   \stepcounter{subquestion}%
-  \tabto{1.4em}\alph{subquestion})\tabto{2.7em}%
+  \tabto{1.4em}\alph{subquestion})\tabto{2.7em}% On écrit le numéro de la sousquestion et on décale le début du paragraphe
 }
-\newcounter{question}% Définition de la commande \question
+\newcounter{question}% Compteur des questions
 \newcommand{\question}{%
-  \par\stepcounter{question}%
-  \setcounter{subquestion}{0}%
-  \noindent\thequestion.\tabto{1.4em}%
+  \par\stepcounter{question}% On commence un paragraphe à chaque question
+  \setcounter{subquestion}{0}% On réinitialise le compeur des subquestions
+  \noindent\thequestion.\tabto{1.4em}% On écrit le numéro de la question et on décale le début du paragraphe
 }
-\newcounter{exercice}
+\newcounter{exercice}% Compeur des exercices
 \newcommand{\exercice}[1]{%
-  \WFfill\WFclear\FloatBarrier%
+  \bariereFloat% On ne veut pas mélanger les figures des exercices
   \stepcounter{exercice}%
-  \setcounter{question}{0}%
-  \subsubsection*{Exercice \theexercice{} - #1}%
+  \setcounter{question}{0}% On réinitialise le compteur de questions
+  \subsubsection{#1}%
   \luadirect{Reponses:exercice( \luastring{\theexercice}, \luastringN{#1} )}%
 }
 
-\newcommand{\reponse}[1]{%
+\newcommand{\reponse}[1]{% Commande reponse
   \luadirect{Reponses:reponse( \luastring{\thequestion}, \luastring{\alph{subquestion}}, \luastringN{#1} );}%
 }
-\newcommand{\afficheReponses}{%
+\newcommand{\afficheReponses}{% Commande pour affihcer les réponses
   \luadirect{tex.print(Reponses.chaine)}%
 }
 
-\newenvironment{enonces}{}{}
-\newenvironment{reponses}{}{}
+\newenvironment{enonces}{}{}% Environnement qui ne fait rien, utile pour le script de compilation
+\newenvironment{reponses}{}{}% idem
