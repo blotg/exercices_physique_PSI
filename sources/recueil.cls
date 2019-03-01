@@ -14,12 +14,11 @@
 
 \geometry{left=1.5cm,right=1.5cm,top=2.5cm,bottom=2.5cm}% Défint la mise en page
 
-\newcommand{\parttitle}{}
 \titleformat{\part}
   {\Huge\scshape}
   {}
   {0pt}
-  {\bariereFloat\newpage #1\renewcommand{\parttitle}{#1}}
+  {\bariereFloat\newpage #1}
 
 \fancypagestyle{premiere}{% Mise en page de la page de garde
   \fancyhf{}%
@@ -29,7 +28,7 @@
 }
 \fancypagestyle{suivantes}{% Mise en page des autres pages
   \fancyhf{}%
-  \fancyhead[L]{\parttitle}%scshape
+  \fancyhead[L]{}% To do : nom de la partie
   \fancyhead[R]{\nouppercase{\rightmark}}%
   \fancyfoot[C]{\thepage}%
   \fancyfoot[R]{\includegraphics[height=12px]{../sources/images/by-nc-sa.pdf}}%

@@ -9,7 +9,7 @@ function Reponses:subsection(nSubsection, titre)-- Ajoute une subsection
 end
 
 function Reponses:exercice(nExercice, titre)-- Ajoute un exercice
-    Reponses.tempExercice = "\\subsubsection*{Exercice " .. nExercice .. " - " .. titre .. "}"
+    Reponses.tempExercice = "\\setcounter{subsubsection}{" .. nExercice .. "}\\addtocounter{subsubsection}{-1}\\subsubsection{" .. titre .. "}"
 end
 
 function Reponses:reponse(nQuestion, nSubQuestion, reponse)-- Ajoute une réponse
