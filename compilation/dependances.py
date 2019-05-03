@@ -38,9 +38,21 @@ def verifier_dependances():
         print("La bibliothèque python \"re\" n'est pas installée et est nécessaire pour continuer.")
         satisfaites = False
     
-    programmes_systeme = ["latexmk", "lualatex"]
+    programmes_systeme = ["latexmk", "lualatex", "kpsewhich"]
     for prog in programmes_systeme:
         if shutil.which(prog) == None:
-            print(prog + " n'est pas installé et est indiscipensable à la compilation.")
+            print(prog + " n'est pas installé et est indispensable à la compilation.")
             satisfaites = False
+
+    if satisfaites:
+        with open("sources/prerequis.sty", "r") as fichier:
+            for ligne in fichier:
+                m = re.search("\RequirePackage\\[?.*\\]?{(.+?)}", ligne)
+                if m:
+                    processus = subprocess.Popen(["kpsewhich", m.group(1)+".sty"], stdout=subprocess.PIPE)
+                    reponse = processus.communicate()[0].decode()
+                    if reponse == "":
+                        print("La bibliothèque Latex " + m.group(1) + " n'est pas installée.")
+                        satisfaites = False
+
     return satisfaites
