@@ -53,7 +53,9 @@ class Structure:
                         if soustheme_vide:
                             if theme_vide:
                                 temp_s[theme] = {}
+                                theme_vide = False
                             temp_s[theme][soustheme] = []
+                            soustheme_vide = False
                         temp_s[theme][soustheme].append(e)
         self.s = temp_s
     
