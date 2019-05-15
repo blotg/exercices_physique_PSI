@@ -33,7 +33,7 @@ def compilation(classes, difficultes, contenu):
     print("Initialisation des dossiers ...")
     init_dossiers()
     print("Génération de la liste des exercices ...")
-    exercices = Structure("sources/exercices")
+    exercices = Structure()
     exercices.selectionne(classes, difficultes)
     print(exercices)
     with open("build/recueil.tex", "w") as fichier_latex:

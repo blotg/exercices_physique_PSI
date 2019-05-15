@@ -5,36 +5,46 @@ from compilation import exercice
 import re
 
 class Structure:
-    s = {}
+    s = []
     classes = ["MPSI", "PCSI", "PTSI", "MP", "PC", "PSI"]
     difficultes = [0,1,2,3,4]
-    def __init__(self,dossier):
-        for racine, dossiers, fichiers in os.walk(dossier):
-            for fichier in fichiers:
+    def __init__(self):
+        self.peuple()
+    
+    def peuple(self):
+        themes = os.listdir("sources/exercices")
+        themes.sort()
+        for theme in themes:
+            chemin = "sources/exercices/" + theme
+            if os.path.isfile(chemin):
+                racine,fichier = os.path.split(chemin)
                 if fichier.endswith(".tex"):
                     e = exercice.Exercice(racine, fichier)
-                    if not e.theme in self.s:
-                        self.s[e.theme] = {}
-                    if not e.soustheme in self.s[e.theme]:
-                        self.s[e.theme][e.soustheme] = []
-                    self.s[e.theme][e.soustheme].append(e)
-    
+                    self.s.append(e)
+            elif os.path.isdir(chemin):
+                exos = os.listdir("sources/exercices/" + theme)
+                exos.sort()
+                L = []
+                for exo in exos:
+                    chemin = "sources/exercices/" + theme + "/" + exo
+                    if os.path.isfile(chemin):
+                        racine,fichier = os.path.split(chemin)
+                        if fichier.endswith(".tex"):
+                            e = exercice.Exercice(racine, fichier)
+                            L.append(e)
+                if len(L) != 0:
+                    self.s.append((theme[3:].replace("_"," "), L))
+                    
     def __str__(self):
         chaine = ""
-        for theme in self.s:
-            chaine += theme + "\n"
-            for soustheme in self.s[theme]:
-                chaine += "|--|" + soustheme + "\n"
-                for e in self.s[theme][soustheme]:
-                    chaine += "|  |-- "
-                    if e.omis:
-                        chaine += "("
-                    chaine += e.titre
-                    for i in range(e.difficulte):
-                        chaine += "*"
-                    if e.omis:
-                        chaine += ")"
-                    chaine += "\n"
+        for element in self.s:
+            if type(element) != tuple:
+                chaine += "|-- " + element + "\n"
+            else:
+                (theme, L) = element
+                chaine += "|-- " + theme + "\n"
+                for exo in L:
+                    chaine += "|   |-- " + str(exo) + "\n"
         chaine = chaine[:-1]
         return chaine
     
@@ -43,20 +53,19 @@ class Structure:
             self.classes = classes
         if difficultes:
             self.difficultes = difficultes
-        temp_s = {}
-        for theme in self.s:
-            theme_vide = True
-            for soustheme in self.s[theme]:
-                soustheme_vide = True
-                for e in self.s[theme][soustheme]:
-                    if any(x in e.classes for x in self.classes) and e.difficulte in self.difficultes:
-                        if soustheme_vide:
-                            if theme_vide:
-                                temp_s[theme] = {}
-                                theme_vide = False
-                            temp_s[theme][soustheme] = []
-                            soustheme_vide = False
-                        temp_s[theme][soustheme].append(e)
+        temp_s = []
+        for element in self.s:
+            if type(element) != tuple:
+                if any(x in element.classes for x in self.classes) and element.difficulte in self.difficultes:
+                    temp_s.append(element)
+            else:
+                (theme, L) = element
+                temp_L = []
+                for exo in L:
+                    if any(x in exo.classes for x in self.classes) and exo.difficulte in self.difficultes and not exo.omis:
+                        temp_L.append(exo)
+                if len(temp_L) != 0:
+                    temp_s.append((theme, temp_L))
         self.s = temp_s
     
     def genere_latex(self, contenu):
@@ -71,12 +80,14 @@ class Structure:
         source_latex = re.sub(motif, remplacement, source_latex)
         if True:
             enonces = ""
-            for theme in self.s:
-                enonces += "\\section{" + theme + "}\n"
-                for soustheme in self.s[theme]:
-                    enonces += "\\subsection{" + soustheme + "}\n"
-                    for e in self.s[theme][soustheme]:
-                        enonces += e.inclusion()
+            for element in self.s:
+                if type(element) != tuple:
+                    enonces += element.inclusion()
+                else:
+                    (theme, L) = element
+                    enonces += "\\section{" + theme + "}\n"
+                    for exo in L:
+                        enonces += exo.inclusion()
             source_latex = re.sub("\\\\afficheEnonces", enonces, source_latex)
         if not "R" in contenu:
             motif = "(\\\\begin\{reponses\}).*?(\\\\end\{reponses\})"
