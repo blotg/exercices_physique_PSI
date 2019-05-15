@@ -25,22 +25,32 @@
     \luadirect{Reponses:section( \luastring{\thesection}, \luastringN{#1} )}% Ajout de la section à la partie réponses
   }
 
-\titleformat{\subsection}% Redéfinition de la subsection
-  {\large\bfseries}% Format
-  {\bariereFloat\thesubsection.}% Numéro
-  {1em}% Espace entre numéro et titre
-  {%
-    #1% Titre
-    \luadirect{Reponses:subsection( \luastring{\arabic{subsection}}, \luastringN{#1} )}% Ajout de la subsection à la partie réponses
-  }
+%\titleformat{\subsection}% Redéfinition de la subsection
+%  {\large\bfseries}% Format
+%  {\bariereFloat\thesubsection.}% Numéro
+%  {1em}% Espace entre numéro et titre
+%  {%
+%    #1% Titre
+%    \luadirect{Reponses:subsection( \luastring{\arabic{subsection}}, \luastringN{#1} )}% Ajout de la subsection à la partie réponses
+%  }
 
-\titleformat{\subsubsection}% Redéfinition de la subsection
+\newcounter{exercice}% Compeur des exercices
+
+\titleformat{\subsection}% Redéfinition de la subsection
   {\bfseries}% Format
-  {\bariereFloat Exercice \arabic{subsubsection} - }% Numéro
+  {\bariereFloat}% Numéro
   {0pt}% Espace entre numéro et titre
   {%
     #1% Titre
   }
+  
+\titlecontents{subsection}
+[2.8em]
+{} % note that 3.8 = 1.5 + 2.3
+{}
+{\hspace*{-2.2em}}
+{\titlerule*[1pc]{.}\contentspage}
+
 
 \newcounter{subquestion}% Compteur des subquestions
 \newcommand{\subquestion}{%
@@ -53,12 +63,12 @@
   \setcounter{subquestion}{0}% On réinitialise le compeur des subquestions
   \noindent\thequestion.\tabto{1.4em}% On écrit le numéro de la question et on décale le début du paragraphe
 }
-\newcounter{exercice}% Compeur des exercices
+
 \newcommand{\exercice}[1]{%
   \bariereFloat% On ne veut pas mélanger les figures des exercices
   \stepcounter{exercice}%
   \setcounter{question}{0}% On réinitialise le compteur de questions
-  \subsubsection{#1}%
+  \subsection{Exercice \arabic{exercice} - #1}%
   \luadirect{Reponses:exercice( \luastring{\theexercice}, \luastringN{#1} )}%
 }
 
